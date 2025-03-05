@@ -38,31 +38,6 @@ public class RawCompression implements DefaultBlockReader, DefaultBlockWriter, C
 
 	private static final long serialVersionUID = 7526445806847086477L;
 
-
-	@Override
-	public InputStream getInputStream(final InputStream in) throws IOException {
-
-		return in;
-	}
-
-	@Override
-	public OutputStream getOutputStream(final OutputStream out) throws IOException {
-
-		return out;
-	}
-
-	@Override
-	public RawCompression getReader() {
-
-		return this;
-	}
-
-	@Override
-	public RawCompression getWriter() {
-
-		return this;
-	}
-
 	@Override
 	public boolean equals(final Object other) {
 

@@ -54,27 +54,14 @@ public class Lz4Compression implements DefaultBlockReader, DefaultBlockWriter, C
 		this(1 << 16);
 	}
 
-	@Override
-	public InputStream getInputStream(final InputStream in) throws IOException {
+ 	private InputStream getInputStream(final InputStream in) throws IOException {
 
 		return new LZ4BlockInputStream(in);
 	}
 
-	public OutputStream getOutputStream(final OutputStream out) throws IOException {
+	private OutputStream getOutputStream(final OutputStream out) throws IOException {
 
 		return new LZ4BlockOutputStream(out, blockSize);
-	}
-
-	@Override
-	public Lz4Compression getReader() {
-
-		return this;
-	}
-
-	@Override
-	public Lz4Compression getWriter() {
-
-		return this;
 	}
 
 	@Override

@@ -81,9 +81,4 @@ public interface Compression extends Serializable, Codec.BytesCodec {
 			return compressionType.value();
 	}
 
-
-	BlockReader getReader();
-
-	BlockWriter getWriter();
-
 }

@@ -54,27 +54,13 @@ public class Bzip2Compression implements DefaultBlockReader, DefaultBlockWriter,
 		this(BZip2CompressorOutputStream.MAX_BLOCKSIZE);
 	}
 
-	@Override
-	public InputStream getInputStream(final InputStream in) throws IOException {
+	private InputStream getInputStream(final InputStream in) throws IOException {
 		return new BZip2CompressorInputStream(in);
 	}
 
-	@Override
-	public OutputStream getOutputStream(final OutputStream out) throws IOException {
+	private OutputStream getOutputStream(final OutputStream out) throws IOException {
 
 		return new BZip2CompressorOutputStream(out, blockSize);
-	}
-
-	@Override
-	public Bzip2Compression getReader() {
-
-		return this;
-	}
-
-	@Override
-	public Bzip2Compression getWriter() {
-
-		return this;
 	}
 
 	@Override

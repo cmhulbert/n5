@@ -1,16 +1,16 @@
 /**
  * Copyright (c) 2017, Stephan Saalfeld
  * All rights reserved.
- *
+ * <p>
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * <p>
  * 1. Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
+ * this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * <p>
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -25,9 +25,6 @@
  */
 package org.janelia.saalfeldlab.n5;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
@@ -67,39 +64,7 @@ public interface DataBlock<T> {
 	 *
 	 * @return data object
 	 */
-	 T getData();
-
-	/**
-	 * Creates a {@link ByteBuffer} that contains the data object of this data
-	 * block.
-	 *
-	 * The {@link ByteBuffer} may or may not map directly to the data
-	 * object of this data block. I.e. modifying the {@link ByteBuffer} after
-	 * calling this method may or may not change the data of this data block.
-	 * modifying the data object of this data block after calling this method
-	 * may or may not change the content of the {@link ByteBuffer}.
-	 *
-	 * @return {@link ByteBuffer} containing data
-	 */
-	 ByteBuffer toByteBuffer();
-
-	/**
-	 * Reads the data object of this data block from a {@link ByteBuffer}.
-	 *
-	 * The {@link ByteBuffer} may or may not map directly to the data
-	 * object of this data block. I.e. modifying the {@link ByteBuffer} after
-	 * calling this method may or may not change the data of this data block.
-	 * modifying the data object of this data block after calling this method
-	 * may or may not change the content of the {@link ByteBuffer}.
-	 *
-	 * @param buffer
-	 *            the byte buffer
-	 */
-	 void readData(final ByteBuffer buffer);
-
-	 void readData(final DataInput inputStream) throws IOException;
-
-	 void writeData(final DataOutput output) throws IOException;
+	T getData();
 
 	/**
 	 * Returns the number of elements in this {@link DataBlock}. This number is
@@ -124,6 +89,7 @@ public interface DataBlock<T> {
 			n *= size[i];
 		return n;
 	}
+
 	/**
 	 * Factory for creating {@code DataBlock<T>}.
 	 *

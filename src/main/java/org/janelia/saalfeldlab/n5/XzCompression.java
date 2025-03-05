@@ -54,28 +54,14 @@ public class XzCompression implements DefaultBlockReader, DefaultBlockWriter, Co
 		this(6);
 	}
 
-	@Override
-	public InputStream getInputStream(final InputStream in) throws IOException {
+	private InputStream getInputStream(final InputStream in) throws IOException {
 
 		return new XZCompressorInputStream(in);
 	}
 
-	@Override
-	public OutputStream getOutputStream(final OutputStream out) throws IOException {
+	private OutputStream getOutputStream(final OutputStream out) throws IOException {
 
 		return new XZCompressorOutputStream(out, preset);
-	}
-
-	@Override
-	public XzCompression getReader() {
-
-		return this;
-	}
-
-	@Override
-	public XzCompression getWriter() {
-
-		return this;
 	}
 
 	@Override

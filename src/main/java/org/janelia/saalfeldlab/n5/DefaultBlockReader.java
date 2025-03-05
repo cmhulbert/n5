@@ -28,43 +28,23 @@ package org.janelia.saalfeldlab.n5;
 import org.janelia.saalfeldlab.n5.codec.Codec.ArrayCodec;
 import org.janelia.saalfeldlab.n5.readdata.ReadData;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 
 /**
- * Default implementation of {@link BlockReader}.
- *
  * @author Stephan Saalfeld
  * @author Igor Pisarev
  */
-public interface DefaultBlockReader extends BlockReader {
-
-	InputStream getInputStream(final InputStream in) throws IOException;
-
-	@Override
-	default <T, B extends DataBlock<T>> void read(
-			final B dataBlock,
-			final InputStream in) throws IOException {
-
-		// do not try with this input stream because subsequent block reads may happen if the stream points to a shard
-		final InputStream inflater = getInputStream(in);
-		readFromStream(dataBlock, inflater);
-	}
+public interface DefaultBlockReader {
 
 	/**
 	 * Reads a {@link DataBlock} from an {@link InputStream}.
 	 *
-	 * @param in
-	 *            the input stream
-	 * @param datasetAttributes
-	 *            the dataset attributes
-	 * @param gridPosition
-	 *            the grid position
+	 * @param in                the input stream
+	 * @param datasetAttributes the dataset attributes
+	 * @param gridPosition      the grid position
 	 * @return the block
-	 * @throws IOException
-	 *             the exception
+	 * @throws IOException the exception
 	 */
 	static DataBlock<?> readBlock(
 			final InputStream in,
@@ -73,14 +53,6 @@ public interface DefaultBlockReader extends BlockReader {
 
 		final ArrayCodec<?> codec = datasetAttributes.getArrayCodec();
 		return codec.decode(ReadData.from(in), gridPosition);
-	}
-
-	static <T, B extends DataBlock<T>> void readFromStream(final B dataBlock, final InputStream in) throws IOException {
-
-		final ByteBuffer buffer = dataBlock.toByteBuffer();
-		final DataInputStream dis = new DataInputStream(in);
-		dis.readFully(buffer.array());
-		dataBlock.readData(buffer);
 	}
 
 }
