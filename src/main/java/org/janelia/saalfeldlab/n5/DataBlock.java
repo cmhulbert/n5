@@ -43,31 +43,31 @@ public interface DataBlock<T> {
 
 	/**
 	 * Returns the size of this data block.
-	 *
+	 * <p>
 	 * The size of a data block is expected to be smaller than or equal to the
 	 * spacing of the block grid. The dimensionality of size is expected to be
 	 * equal to the dimensionality of the dataset. Consistency is not enforced.
 	 *
 	 * @return size of the data block
 	 */
-	public int[] getSize();
+	int[] getSize();
 
 	/**
 	 * Returns the position of this data block on the block grid.
-	 *
+	 * <p>
 	 * The dimensionality of the grid position is expected to be equal to the
 	 * dimensionality of the dataset. Consistency is not enforced.
 	 *
 	 * @return position on the block grid
 	 */
-	public long[] getGridPosition();
+	long[] getGridPosition();
 
 	/**
 	 * Returns the data object held by this data block.
 	 *
 	 * @return data object
 	 */
-	public T getData();
+	 T getData();
 
 	/**
 	 * Creates a {@link ByteBuffer} that contains the data object of this data
@@ -81,7 +81,7 @@ public interface DataBlock<T> {
 	 *
 	 * @return {@link ByteBuffer} containing data
 	 */
-	public ByteBuffer toByteBuffer();
+	 ByteBuffer toByteBuffer();
 
 	/**
 	 * Reads the data object of this data block from a {@link ByteBuffer}.
@@ -95,11 +95,11 @@ public interface DataBlock<T> {
 	 * @param buffer
 	 *            the byte buffer
 	 */
-	public void readData(final ByteBuffer buffer);
+	 void readData(final ByteBuffer buffer);
 
-	public void readData(final DataInput inputStream) throws IOException;
+	 void readData(final DataInput inputStream) throws IOException;
 
-	public void writeData(final DataOutput output) throws IOException;
+	 void writeData(final DataOutput output) throws IOException;
 
 	/**
 	 * Returns the number of elements in this {@link DataBlock}. This number is
@@ -108,7 +108,7 @@ public interface DataBlock<T> {
 	 *
 	 * @return the number of elements
 	 */
-	public int getNumElements();
+	int getNumElements();
 
 	/**
 	 * Returns the number of elements in a box of given size.
@@ -117,11 +117,21 @@ public interface DataBlock<T> {
 	 *            the size
 	 * @return the number of elements
 	 */
-	public static int getNumElements(final int[] size) {
+	static int getNumElements(final int[] size) {
 
 		int n = size[0];
 		for (int i = 1; i < size.length; ++i)
 			n *= size[i];
 		return n;
+	}
+	/**
+	 * Factory for creating {@code DataBlock<T>}.
+	 *
+	 * @param <T>
+	 * 		type of the data contained in the DataBlock
+	 */
+	interface DataBlockFactory<T> {
+
+		DataBlock<T> createDataBlock(int[] blockSize, long[] gridPosition, T data);
 	}
 }

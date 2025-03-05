@@ -30,10 +30,6 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
 import org.janelia.saalfeldlab.n5.codec.Codec.ArrayCodec;
-import org.janelia.saalfeldlab.n5.codec.Codec.BytesCodec;
-import org.janelia.saalfeldlab.n5.codec.Codec.DataBlockOutputStream;
-
-import static org.janelia.saalfeldlab.n5.codec.Codec.encode;
 
 /**
  * Default implementation of {@link BlockWriter}.
@@ -43,10 +39,10 @@ import static org.janelia.saalfeldlab.n5.codec.Codec.encode;
  */
 public interface DefaultBlockWriter extends BlockWriter {
 
-	public OutputStream getOutputStream(final OutputStream out) throws IOException;
+	OutputStream getOutputStream(final OutputStream out) throws IOException;
 
 	@Override
-	public default <T> void write(
+	default <T> void write(
 			final DataBlock<T> dataBlock,
 			final OutputStream out) throws IOException {
 
@@ -70,24 +66,12 @@ public interface DefaultBlockWriter extends BlockWriter {
 	 * @throws IOException
 	 *             the exception
 	 */
-	public static <T> void writeBlock(
+	static <T> void writeBlock(
 			final OutputStream out,
 			final DatasetAttributes datasetAttributes,
 			final DataBlock<T> dataBlock) throws IOException {
 
-		final BytesCodec[] codecs = datasetAttributes.getCodecs();
 		final ArrayCodec arrayCodec = datasetAttributes.getArrayCodec();
-		final DataBlockOutputStream dataBlockOutput = arrayCodec.encode(datasetAttributes, dataBlock, out);
-
-		OutputStream stream = encode(dataBlockOutput, codecs);
-
-		dataBlock.writeData(dataBlockOutput.getDataOutput(stream));
-		stream.close();
-	}
-
-	public static <T> void writeFromStream(final DataBlock<T> dataBlock, final OutputStream out) throws IOException {
-
-		final ByteBuffer buffer = dataBlock.toByteBuffer();
-		out.write(buffer.array());
+		arrayCodec.encode(dataBlock).writeTo(out);
 	}
 }

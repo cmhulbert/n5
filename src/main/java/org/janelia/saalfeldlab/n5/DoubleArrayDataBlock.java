@@ -34,7 +34,7 @@ public class DoubleArrayDataBlock extends AbstractDataBlock<double[]> {
 
 	public DoubleArrayDataBlock(final int[] size, final long[] gridPosition, final double[] data) {
 
-		super(size, gridPosition, data);
+		super(size, gridPosition, data, a -> a.length);
 	}
 
 	@Override
@@ -63,11 +63,5 @@ public class DoubleArrayDataBlock extends AbstractDataBlock<double[]> {
 
 		for (int i = 0; i < data.length; i++)
 			output.writeDouble(data[i]);
-	}
-
-	@Override
-	public int getNumElements() {
-
-		return data.length;
 	}
 }

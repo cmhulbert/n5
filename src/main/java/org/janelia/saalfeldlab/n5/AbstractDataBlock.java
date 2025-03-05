@@ -29,6 +29,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.function.ToIntFunction;
 
 /**
  * Abstract base class for {@link DataBlock} implementations.
@@ -43,12 +44,19 @@ public abstract class AbstractDataBlock<T> implements DataBlock<T> {
 	protected final int[] size;
 	protected final long[] gridPosition;
 	protected final T data;
+	private final ToIntFunction<T> numElements;
 
 	public AbstractDataBlock(final int[] size, final long[] gridPosition, final T data) {
+
+		this(size, gridPosition, data, (t) -> -1);
+	}
+
+	public AbstractDataBlock(final int[] size, final long[] gridPosition, final T data, final ToIntFunction<T> numElements) {
 
 		this.size = size;
 		this.gridPosition = gridPosition;
 		this.data = data;
+		this.numElements = numElements;
 	}
 
 	@Override
@@ -82,6 +90,12 @@ public abstract class AbstractDataBlock<T> implements DataBlock<T> {
 
 		final ByteBuffer buffer = toByteBuffer();
 		output.write(buffer.array());
+	}
+
+	@Override
+	public int getNumElements() {
+
+		return numElements.applyAsInt(data);
 	}
 
 }

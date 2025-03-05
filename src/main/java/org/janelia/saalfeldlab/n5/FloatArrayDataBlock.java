@@ -34,7 +34,7 @@ public class FloatArrayDataBlock extends AbstractDataBlock<float[]> {
 
 	public FloatArrayDataBlock(final int[] size, final long[] gridPosition, final float[] data) {
 
-		super(size, gridPosition, data);
+		super(size, gridPosition, data, a -> a.length);
 	}
 
 	@Override
@@ -63,11 +63,5 @@ public class FloatArrayDataBlock extends AbstractDataBlock<float[]> {
 
 		for (int i = 0; i < data.length; i++)
 			output.writeFloat(data[i]);
-	}
-
-	@Override
-	public int getNumElements() {
-
-		return data.length;
 	}
 }

@@ -32,6 +32,7 @@ import java.io.OutputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
 import org.janelia.saalfeldlab.n5.Compression.CompressionType;
+import org.janelia.saalfeldlab.n5.readdata.ReadData;
 import org.janelia.saalfeldlab.n5.serialization.NameConfig;
 
 @CompressionType("bzip2")
@@ -54,27 +55,14 @@ public class Bzip2Compression implements DefaultBlockReader, DefaultBlockWriter,
 	}
 
 	@Override
-	public InputStream decode(final InputStream in) throws IOException {
-
-		return new BZip2CompressorInputStream(in);
-	}
-
-	@Override
 	public InputStream getInputStream(final InputStream in) throws IOException {
-
-		return decode(in);
-	}
-
-	@Override
-	public OutputStream encode(final OutputStream out) throws IOException {
-
-		return new BZip2CompressorOutputStream(out, blockSize);
+		return new BZip2CompressorInputStream(in);
 	}
 
 	@Override
 	public OutputStream getOutputStream(final OutputStream out) throws IOException {
 
-		return encode(out);
+		return new BZip2CompressorOutputStream(out, blockSize);
 	}
 
 	@Override
@@ -98,4 +86,14 @@ public class Bzip2Compression implements DefaultBlockReader, DefaultBlockWriter,
 			return blockSize == ((Bzip2Compression)other).blockSize;
 	}
 
+	@Override
+	public ReadData decode(final ReadData readData) throws IOException {
+
+		return ReadData.from(new BZip2CompressorInputStream(readData.inputStream()));
+	}
+
+	@Override
+	public ReadData encode(final ReadData readData) {
+		return readData.encode(this::getOutputStream);
+	}
 }

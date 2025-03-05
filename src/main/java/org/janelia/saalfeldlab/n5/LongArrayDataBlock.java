@@ -34,7 +34,7 @@ public class LongArrayDataBlock extends AbstractDataBlock<long[]> {
 
 	public LongArrayDataBlock(final int[] size, final long[] gridPosition, final long[] data) {
 
-		super(size, gridPosition, data);
+		super(size, gridPosition, data, a -> a.length);
 	}
 
 	@Override
@@ -63,11 +63,5 @@ public class LongArrayDataBlock extends AbstractDataBlock<long[]> {
 
 		for (int i = 0; i < data.length; i++)
 			output.writeLong(data[i]);
-	}
-
-	@Override
-	public int getNumElements() {
-
-		return data.length;
 	}
 }

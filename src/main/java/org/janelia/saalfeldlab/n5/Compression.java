@@ -86,24 +86,4 @@ public interface Compression extends Serializable, Codec.BytesCodec {
 
 	BlockWriter getWriter();
 
-	/**
-	 * Decode an {@link InputStream}.
-	 *
-	 * @param in
-	 *            input stream
-	 * @return the decoded input stream
-	 */
-	@Override
-	InputStream decode(InputStream in) throws IOException;
-
-	/**
-	 * Encode an {@link OutputStream}.
-	 *
-	 * @param out
-	 *            the output stream
-	 * @return the encoded output stream
-	 */
-	@Override
-	OutputStream encode(OutputStream out) throws IOException;
-
 }

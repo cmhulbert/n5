@@ -37,6 +37,7 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.janelia.saalfeldlab.n5.Compression.CompressionType;
+import org.janelia.saalfeldlab.n5.readdata.ReadData;
 import org.janelia.saalfeldlab.n5.serialization.NameConfig;
 
 @CompressionType("gzip")
@@ -76,7 +77,7 @@ public class GzipCompression implements DefaultBlockReader, DefaultBlockWriter, 
 	}
 
 	@Override
-	public InputStream decode(InputStream in) throws IOException {
+	public InputStream getInputStream(final InputStream in) throws IOException {
 
 		if (useZlib) {
 			return new InflaterInputStream(in);
@@ -86,13 +87,7 @@ public class GzipCompression implements DefaultBlockReader, DefaultBlockWriter, 
 	}
 
 	@Override
-	public InputStream getInputStream(final InputStream in) throws IOException {
-
-		return decode(in);
-	}
-
-	@Override
-	public OutputStream encode(OutputStream out) throws IOException {
+	public OutputStream getOutputStream(final OutputStream out) throws IOException {
 
 		if (useZlib) {
 			return new DeflaterOutputStream(out, new Deflater(level));
@@ -100,12 +95,6 @@ public class GzipCompression implements DefaultBlockReader, DefaultBlockWriter, 
 			parameters.setCompressionLevel(level);
 			return new GzipCompressorOutputStream(out, parameters);
 		}
-	}
-
-	@Override
-	public OutputStream getOutputStream(final OutputStream out) throws IOException {
-
-		return encode(out);
 	}
 
 	@Override
@@ -134,6 +123,23 @@ public class GzipCompression implements DefaultBlockReader, DefaultBlockWriter, 
 		else {
 			final GzipCompression gz = ((GzipCompression)other);
 			return useZlib == gz.useZlib && level == gz.level;
+		}
+	}
+
+	@Override
+	public ReadData decode(final ReadData readData) throws IOException {
+		return ReadData.from(getInputStream(readData.inputStream()));
+	}
+
+	@Override
+	public ReadData encode(final ReadData readData) {
+		if (useZlib) {
+			return readData.encode(out -> new DeflaterOutputStream(out, new Deflater(level)));
+		} else {
+			return readData.encode(out -> {
+				parameters.setCompressionLevel(level);
+				return new GzipCompressorOutputStream(out, parameters);
+			});
 		}
 	}
 

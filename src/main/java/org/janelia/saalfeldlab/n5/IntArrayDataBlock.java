@@ -34,7 +34,7 @@ import java.nio.ByteBuffer;
 public class IntArrayDataBlock extends AbstractDataBlock<int[]> {
 	public IntArrayDataBlock(final int[] size, final long[] gridPosition, final int[] data) {
 
-		super(size, gridPosition, data);
+		super(size, gridPosition, data, a -> a.length);
 	}
 
 	@Override
@@ -63,11 +63,5 @@ public class IntArrayDataBlock extends AbstractDataBlock<int[]> {
 
 		for (int i = 0; i < data.length; i++)
 			output.writeInt(data[i]);
-	}
-
-	@Override
-	public int getNumElements() {
-
-		return data.length;
 	}
 }

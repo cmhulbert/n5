@@ -37,7 +37,7 @@ public class StringDataBlock extends AbstractDataBlock<String[]> {
     protected String[] actualData = null;
 
     public StringDataBlock(final int[] size, final long[] gridPosition, final String[] data) {
-        super(size, gridPosition, new String[0]);
+        super(size, gridPosition, new String[0], a -> a.length);
         actualData = data;
     }
 
